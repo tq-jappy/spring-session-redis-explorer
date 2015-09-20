@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+        >
+<head lang="ja">
+    <meta charset="UTF-8">
+    <title>Spring Session Redis Explorer</title>
+    <meta name="description" content="Spring Session Redis Explorer">
+    <meta name="author" content="Takumi Endo">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+          th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap.min.css}"/>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css"
+          th:href="@{/webjars/bootstrap/3.2.0/css/bootstrap-theme.min.css}"/>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"
+            th:src="@{/webjars/jquery/1.11.1/jquery.min.js}"></script>
+    <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.css"
+            th:src="@{/webjars/bootstrap/3.2.0/js/bootstrap.min.js}"></script>
+</head>
+<body>
+<div class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="#">
+            Spring Session Redis Explorer
+        </a>
+    </div>
+</div>
+
+<div class="container">
+    <div class="alert" th:classappend="${flashMessage.cssClass}"
+         th:text="${flashMessage.message}" th:if="${flashMessage}"></div>
+
+    <h2>MapSession</h2>
+
+    <table class="table table-striped table-bordered table-condensed">
+        <thead>
+        <tr>
+            <th>SessionID</th>
+            <th>CreationTime</th>
+            <th>LastAccessedTime</th>
+            <th>MaxInactiveInterval(s)</th>
+            <th>Attributes</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="session : ${mapSessionList}">
+            <td th:text="${session.id}"></td>
+            <td>
+                <span th:text="${session.creationTime}"></span><br/>
+                <span th:text="'(' + ${#date.format(session.creationTime)} + ')'"></span>
+            </td>
+            <td>
+                <span th:text="${session.lastAccessedTime}"></span><br/>
+                <span th:text="'(' + ${#date.format(session.lastAccessedTime)} + ')'"></span>
+            </td>
+            <td>
+                <span th:text="${session.maxInactiveIntervalInSeconds}"></span>
+            </td>
+            <td>
+                <ul>
+                    <li th:each="attrName : ${session.attributeNames}">
+                        <span th:text="${attrName}"></span>
+                        <span th:text="${session.getAttribute(attrName)}"></span>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2>ExpireSession</h2>
+    <table class="table table-striped table-bordered table-condensed">
+        <thead>
+        <tr>
+            <th>Expiration</th>
+            <th>SessionID</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="session : ${expirationSessionList}">
+            <td
+            <span th:text="${session.expiration}"></span>
+            <span th:text="'(' + ${#date.format(session.expiration)} + ')'"></span>
+            </td>
+            <td>
+                <ul>
+                    <li th:each="sessionId : ${session.sessionIdList}">
+                        <span th:text="${sessionId}"></span>
+                    </li>
+                </ul>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

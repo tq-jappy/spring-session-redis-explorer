@@ -1,0 +1,14 @@
+spring:
+    thymeleaf:
+        mode: LEGACYHTML5
+        cache: false
+    redis:
+        host: localhost
+        port: 6379
+security:
+    basic:
+        enabled: false
+logging:
+    level:
+        org.springframework: INFO
+        session.redis.explorer: DEBUG
