@@ -2,6 +2,8 @@
 
 Explorer for Spring Session Data Redis
 
+## ScreenShots
+
 ![Main page](screenshots/01.png)
 
 ## Requirements
